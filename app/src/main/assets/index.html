@@ -1,0 +1,38 @@
+<!-- desmos.html -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hello, Desmos!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <script src="https://www.desmos.com/api/v1.8/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+    </head>
+    <body>
+        <div id="calculator" style="width: 100%; height: 100vh;"></div>
+        <script>
+            var myCalculator = Desmos.Calculator(document.getElementById('calculator'));
+            let coefficients = JSON.parse(WebAppInterface.getCoefficients());
+
+            let mag = [];
+            let freq = [];
+            let phase = [];
+
+
+            coefficients.forEach(coefficient => {
+                mag.push(coefficient.mag);
+                freq.push(coefficient.freq);
+                phase.push(coefficient.phase);
+            });
+
+
+            let expressions = [
+                { id: 'listAmp', latex: `R_p=[${mag}]` },
+                { id: 'listFreq', latex: `F_p=[${freq}]` },
+                { id: 'listPhase', latex: `A_p=[${phase}]` },
+                { id: 'parametric', latex: `\\left(\\sum _{i=1}^{\\operatorname{length}\\left(R_p\\right)}R_p\\left[i\\right]\\cos \\left(F_p\\left[i\\right]tt_1+A_p\\left[i\\right]\\right),-\\sum _{i=1}^{\\operatorname{length}\\left(R_p\\right)}R_p\\left[i\\right]\\sin \\left(F_p\\left[i\\right]tt_1+A_p\\left[i\\right]\\right)\\right)`},
+                { id: 'slider', sliderBounds: { min: 0, max: 6.28, step: 0 }, latex: 't_{1}=0'},
+            ]
+            myCalculator.setExpressions(expressions);
+
+        </script>
+    </body>
+</html>
