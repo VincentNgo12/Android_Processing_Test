@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TestProcessing</string>
+    <string name="reset">Reset</string>
+    <string name="graph_now">Graph Now!</string>
 </resources>

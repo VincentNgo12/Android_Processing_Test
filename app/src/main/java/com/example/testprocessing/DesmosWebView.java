@@ -28,8 +28,13 @@ public class DesmosWebView extends AppCompatActivity {
 
         //Get the drawing ArrayList
         Bundle extra = getIntent().getBundleExtra("extra");
-        ArrayList<PVector> drawing = (ArrayList<PVector>) extra.getSerializable("drawing");
-        ArrayList<DiscreteFourierTransform.FourierCoefficient> coefficients = DiscreteFourierTransform.DFT(drawing);
+        ArrayList<ArrayList<PVector>> drawing = (ArrayList<ArrayList<PVector>>) extra.getSerializable("drawing");
+        ArrayList<ArrayList<DiscreteFourierTransform.FourierCoefficient>> coefficientsList = new ArrayList<ArrayList<DiscreteFourierTransform.FourierCoefficient>>();
+        for (ArrayList<PVector> path: drawing){
+            ArrayList<DiscreteFourierTransform.FourierCoefficient> coefficients = DiscreteFourierTransform.DFT(path);
+            coefficientsList.add(coefficients);
+        }
+
 
         wvDesmos = (WebView) findViewById(R.id.wvDesmos);
 
@@ -45,7 +50,7 @@ public class DesmosWebView extends AppCompatActivity {
 
         wvDesmos.setWebViewClient(new LocalContentWebViewClient(assetLoader));
 
-        wvDesmos.addJavascriptInterface(new WebAppInterface(this, coefficients),"WebAppInterface");
+        wvDesmos.addJavascriptInterface(new WebAppInterface(this, coefficientsList),"WebAppInterface");
 
         wvDesmos.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }

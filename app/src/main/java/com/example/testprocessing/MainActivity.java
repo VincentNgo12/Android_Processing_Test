@@ -2,6 +2,7 @@ package com.example.testprocessing;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,9 @@ import processing.core.PVector;
 public class MainActivity extends AppCompatActivity {
     private PApplet sketch;
     Button btnGraphNow;
+    Button btnReset;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,12 +35,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnGraphNow = findViewById(R.id.btnGraphNow);
+        btnReset = findViewById(R.id.btnReset);
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sketch.onReset();
+            }
+        });
+
         btnGraphNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, DesmosWebView.class);
                 Bundle extra = new Bundle();
-                ArrayList<PVector> drawing = sketch.getDrawing();
+                ArrayList<ArrayList<PVector>> drawing = sketch.getDrawing();
                 extra.putSerializable("drawing", drawing);
                 intent.putExtra("extra", extra);
                 startActivity(intent);

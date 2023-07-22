@@ -12,12 +12,15 @@ import processing.core.PVector;
 
 public class WebAppInterface {
     Context mContext;
-    ArrayList<DiscreteFourierTransform.FourierCoefficient> coefficients;
+    ArrayList<String> coefficientsList = new ArrayList<String>();
 
     /** Instantiate the interface and set the context */
-    WebAppInterface(Context c, ArrayList<DiscreteFourierTransform.FourierCoefficient> coefficients) {
+    WebAppInterface(Context c, ArrayList<ArrayList<DiscreteFourierTransform.FourierCoefficient>> coefficientsList) {
         mContext = c;
-        this.coefficients = coefficients;
+        for(ArrayList<DiscreteFourierTransform.FourierCoefficient> coefficients: coefficientsList){
+            Gson gson = new Gson();
+            this.coefficientsList.add(gson.toJson(coefficients));
+        }
     }
 
     /** Show a toast from the web page */
@@ -27,8 +30,8 @@ public class WebAppInterface {
     }
 
     @JavascriptInterface
-    public String getCoefficients(){
+    public String getCoefficientsList(){
         Gson gson = new Gson();
-        return gson.toJson(this.coefficients);
+        return gson.toJson(this.coefficientsList);
     }
 }
